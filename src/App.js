@@ -8,8 +8,7 @@ import LoginComponent from './LoginComponent';
 import UsersComponent from './UsersComponent';
 import UserComponent from './UserComponent';
 
-class App extends React.Component {
-    render() {
+function App() {
     const history = createBrowserHistory();
 
     return (
@@ -19,7 +18,6 @@ class App extends React.Component {
             <Route exact path={'/user'} component={UserComponent} />
         </Router>
     );
-    }
 }
 
 export default App;
