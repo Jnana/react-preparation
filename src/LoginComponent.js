@@ -1,43 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
-class LoginComponent extends React.Component {
+function LoginComponent() {
 
-    constructor(props) {
-        super(props)
-        this.state = {loginsuccessful: false};
-		this.onLoginButtonClicked = this.onLoginButtonClicked.bind(this);
-		this.onUserNameEntered = this.onUserNameEntered.bind(this);
-    }
+    const [login, setLogin] = useState(false);
+    const [loggedInUser, setloggedInUser] = useState({name: ''});
 
-    onLoginButtonClicked = () => {
+    useEffect( () => {
+        // Do the initialization here....
+    })
+
+    const onLoginButtonClicked = () => {
         console.log('onLoginButtonClicked ')
-        if(this.state.name === 'admin') {
-            this.setState({loginsuccessful: true});
+        if(loggedInUser.name === 'admin') {
+            setLogin(true);
         }
     }
 
-    onUserNameEntered = (userName) => {
-        this.setState({name: userName});
-        console.log('onUserNameEntered: ' + userName)
+    const onUserNameEntered = (eventSource) => {
+        setloggedInUser({name: eventSource.target.value});
+        console.log('onUserNameEntered: ' + loggedInUser.name);
     }
 
-    goToUsersComponent() {
-        if(this.state.loginsuccessful) {
+    const goToUsersComponent = () => {
+        if(login) {
             console.log('goToUsersComponent: ');
             return <Redirect to='/users'></Redirect>
         }
     }
 
-    render() {
-        return (
-            <div>
-                {this.goToUsersComponent()}
-                <input onChange={(e) => { this.onUserNameEntered(e.target.value) }}></input>
-                <button onClick={() => {this.onLoginButtonClicked()}}>Click me to login</button>
-            </div>
-        )
-    }
+    return (
+        <div>
+            {goToUsersComponent()}
+            <input onChange={onUserNameEntered}></input>
+            <button onClick={onLoginButtonClicked}>Click me to login</button>
+        </div>
+    )
 }
 
 export default LoginComponent;
