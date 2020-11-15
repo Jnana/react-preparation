@@ -1,14 +1,13 @@
 import React from 'react';
 
-class UserComponent extends React.Component {
+function UserComponent() {
+//    const theme = useContext(LoggedInUserContext);
 
-    render() {
         return (
             <div>
                 User component
             </div>
         )
-    }
 }
 
 export default UserComponent;
