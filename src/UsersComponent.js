@@ -1,63 +1,68 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { List } from 'semantic-ui-react'
 
-class UsersComponent extends React.Component {
+function UsersComponent() {
 
-    constructor(pros) {
-        super(pros);
-        this.state = {users:[], username:''}
-        this.fetchUsers()
-    }
+    const [users, setUsers] = useState([]);
+    const [userName, setUserName] = useState('');
 
-    fetchUsers() {
+    console.log('UsersComponent........ called');
+
+    useEffect( () => {
+        console.log('useEffect........ called');
+        //setUserName('jnana');
+        fetchUsers();    
+    }, []);
+
+    const fetchUsers = () => {
         const USERS_URL = "https://jsonplaceholder.typicode.com/users";
         fetch(USERS_URL)
 		.then((response) => response.json())
 		.then((response) => {
-            this.setState({users: response});
+            setUsers(result => [...result, response]);
 			console.log(response);
 		});
     }
 
-    onListItemClicked(value) {
+    const onListItemClicked = (value) => {
         if(value) {
-            this.setState({username: value})
+        console.log('onListItemClicked before....');
+           // setUserName(value)
         }
     }
 
-    goToUseComponent() {
-        if(this.state.username) {
-            console.log(this.state.username);
+    const goToUseComponent = () => {
+        if(userName) {
+            console.log('goToUseComponent....');
             return <Redirect to='/user'></Redirect>
         }
     }
 
-    showAllUsers() {
-    }
-
-    render() {
-        return (
-            <div>
-                {this.goToUseComponent()}
-                <List divided relaxed>
-                     {
-                    this.state.users.map((username) => {
+    return (
+        <div>
+            <List>
+                {
+                    users.map((manyUsers) => {
+                        console.log(users);
                         return (
-                            <List.Item key= {Math.random()} onClick= { () => {this.onListItemClicked(username.name)} }>
-                                <List.Content>
-                                    <List.Header>
-                                        {username.name}
-                                    </List.Header>
-                                </List.Content>
-                            </List.Item>
-                        );
-                    })                        
+                        manyUsers.map((oneUser) => {
+                            console.log(oneUser.name);
+                            return (
+                                <List.Item key={Math.random()}>
+                                    <List.Content>
+                                        <List.Header>
+                                            {oneUser.name}
+                                        </List.Header>
+                                    </List.Content>
+                                </List.Item>
+                                )
+                        }))
+                    })
                 }
-                </List>
-            </div>
-        )
-    }
+            </List>
+        </div>
+    )
 }
 
 export default UsersComponent;
