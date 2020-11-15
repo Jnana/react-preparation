@@ -7,7 +7,7 @@ function UsersComponent() {
     const [users, setUsers] = useState([]);
     const [userName, setUserName] = useState('');
 
-    console.log('UsersComponent........ called');
+    console.log(userName);
 
     useEffect( () => {
         console.log('useEffect........ called');
@@ -21,14 +21,15 @@ function UsersComponent() {
 		.then((response) => response.json())
 		.then((response) => {
             setUsers(result => [...result, response]);
-			console.log(response);
 		});
     }
 
-    const onListItemClicked = (value) => {
-        if(value) {
-        console.log('onListItemClicked before....');
-           // setUserName(value)
+    const onListItemClicked = (e) => {
+        const selectedUserName = e.target.textContent;
+
+        if(e.target.textContent) {
+        console.log('Setting new user name....');
+        setUserName(...userName, selectedUserName)
         }
     }
 
@@ -41,21 +42,20 @@ function UsersComponent() {
 
     return (
         <div>
+            {goToUseComponent()}
             <List>
                 {
                     users.map((manyUsers) => {
-                        console.log(users);
                         return (
-                        manyUsers.map((oneUser) => {
-                            console.log(oneUser.name);
-                            return (
-                                <List.Item key={Math.random()}>
-                                    <List.Content>
-                                        <List.Header>
-                                            {oneUser.name}
-                                        </List.Header>
-                                    </List.Content>
-                                </List.Item>
+                            manyUsers.map((oneUser) => {
+                                return (
+                                    <List.Item key={Math.random()} onClick = {onListItemClicked}>
+                                        <List.Content>
+                                            <List.Header>
+                                                {oneUser.name}
+                                            </List.Header>
+                                        </List.Content>
+                                    </List.Item>
                                 )
                         }))
                     })
