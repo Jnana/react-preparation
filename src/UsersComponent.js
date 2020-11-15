@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { List } from 'semantic-ui-react'
+import UserComponent from './UserComponent';
 
 function UsersComponent() {
 
     const [users, setUsers] = useState([]);
     const [userName, setUserName] = useState('');
+
+    const LoggedInUserContext = React.createContext(userName);
 
     console.log(userName);
 
@@ -36,7 +39,11 @@ function UsersComponent() {
     const goToUseComponent = () => {
         if(userName) {
             console.log('goToUseComponent....');
-            return <Redirect to='/user'></Redirect>
+            return (
+                <LoggedInUserContext.Provider value={userName}>
+                    <UserComponent />
+                </LoggedInUserContext.Provider>
+            )
         }
     }
 
